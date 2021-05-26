@@ -1,5 +1,7 @@
-const taskFactory = (name, dueTime, project, status, priority) => {
+import renderer from "./userInterface"
 
+const taskFactory = (name, dueTime, project, status, priority) => {
+  
   const getTask = () => {
     console.log(`task: ${name}, 
     duetime:${dueTime}, 
@@ -35,6 +37,16 @@ const projectFactory = (projectName, goal) => {
   }
 }
 
+const saveTask = () => {
+  const inputText = document.getElementById("inputText");
+  taskFactory(inputText.value);
+  localStorage.setItem(inputText.value, inputText.value);
+  renderer.renderTask();
+}
+
+export { 
+  saveTask
+};
 export {
   taskFactory
 };
