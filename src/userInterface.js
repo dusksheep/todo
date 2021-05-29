@@ -2,6 +2,10 @@ import {
   saveTask
 } from "./programLogic"
 
+import {
+  cleanAll
+} from "./programLogic"
+
 const renderer = (() => {
   'use strict';
   const content = document.getElementById("content");
@@ -32,6 +36,8 @@ const renderer = (() => {
 
     cancel.addEventListener("click", removeForm);
     submit.addEventListener("click", saveTask);
+    submit.addEventListener("click", ()=>{content.removeChild(form)})
+    
 
     form.appendChild(inputLabel);
     form.appendChild(inputText);
@@ -40,30 +46,36 @@ const renderer = (() => {
     content.appendChild(form);
   }
 
-  const renderTask = () => {
-    Object.keys(localStorage).forEach(key => {
+  const renderTask = (task) => {
       let taskLabel = document.createElement("label");
-      taskLabel.innerHTML = key;
-      content.appendChild(taskLabel);});
+      taskLabel.innerHTML = task.name;
+      content.appendChild(taskLabel);
   }
 
   const renderBones = () => {
     const addTaskButton = document.createElement("button");
+    const cleanAllButton = document.createElement("button");
     const taskLabel = document.createElement("div");
     const wrapper = document.createElement("div");
 
+    cleanAllButton.setAttribute("class", "cleanButton");
     wrapper.setAttribute("class", "wrapper");
     taskLabel.setAttribute("class", "taskLabel");
     addTaskButton.setAttribute("id", "addTaskButton");
 
     addTaskButton.innerHTML = "+";
     taskLabel.innerHTML = "this is a label";
+    cleanAllButton.innerHTML = "Clean All";
 
     addTaskButton.addEventListener("click", renderForm);
+    addTaskButton.addEventListener("click", ()=>{addTaskButton.disabled = true});
+    cleanAllButton.addEventListener("click", cleanAll);
+    
 
-
+    content.appendChild(cleanAllButton);
     content.appendChild(addTaskButton);
     content.appendChild(taskLabel);
+    
   }
 
   return {

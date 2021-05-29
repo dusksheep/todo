@@ -39,9 +39,24 @@ const projectFactory = (projectName, goal) => {
 
 const saveTask = () => {
   const inputText = document.getElementById("inputText");
-  taskFactory(inputText.value);
-  localStorage.setItem(inputText.value, inputText.value);
+  if(!saveTask.tasks) {
+    saveTask.tasks = {}
+  }
+  
+  saveTask.tasks[taskFactory(inputText.value).name] = taskFactory(inputText.value);
+  let task = taskFactory(inputText.value);
+  renderer.renderTask(task);
+  inputText.value = "";
+  addTaskButton = document.getElementById("addTaskButton");
+  addTaskButton.disabled = false;
+}
+
+const cleanAll = () => {
+  
+  saveTask.task = {};
+  localStorage.clear();
   renderer.renderTask();
+
 }
 
 export { 
@@ -53,3 +68,7 @@ export {
 export {
   projectFactory
 };
+
+export { 
+  cleanAll
+}
