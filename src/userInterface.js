@@ -6,6 +6,10 @@ import {
   cleanAll
 } from "./programLogic"
 
+import {
+  deleteTaskLabel
+} from "./programLogic"
+
 const renderer = (() => {
   'use strict';
   const content = document.getElementById("content");
@@ -47,24 +51,36 @@ const renderer = (() => {
   }
 
   const renderTask = (task) => {
+      
       let taskLabel = document.createElement("label");
+      taskLabel.setAttribute("class", "taskLabel");
       taskLabel.innerHTML = task.name;
+
+      let deleteButton = document.createElement("button");
+      deleteButton.setAttribute("class", "taskButton");
+      deleteButton.innerHTML = "Remove";
+      deleteButton.addEventListener("click", () =>{content.removeChild(taskLabel);});
+
+      let completeButton = document.createElement("button");
+      completeButton.setAttribute("class", "taskButton");
+      completeButton.innerHTML = "Done";
+      completeButton.addEventListener("click", removeTaskLabel = () =>{deleteTaskLabel(taskLabel)});
+      
+      taskLabel.appendChild(completeButton);
+      taskLabel.appendChild(deleteButton);
       content.appendChild(taskLabel);
   }
 
   const renderBones = () => {
     const addTaskButton = document.createElement("button");
     const cleanAllButton = document.createElement("button");
-    const taskLabel = document.createElement("div");
     const wrapper = document.createElement("div");
 
     cleanAllButton.setAttribute("class", "cleanButton");
-    wrapper.setAttribute("class", "wrapper");
-    taskLabel.setAttribute("class", "taskLabel");
+    wrapper.setAttribute("class", "wrapper");  
     addTaskButton.setAttribute("id", "addTaskButton");
-
-    addTaskButton.innerHTML = "+";
-    taskLabel.innerHTML = "this is a label";
+  
+    addTaskButton.innerHTML = "+";  
     cleanAllButton.innerHTML = "Clean All";
 
     addTaskButton.addEventListener("click", renderForm);
@@ -74,7 +90,7 @@ const renderer = (() => {
 
     content.appendChild(cleanAllButton);
     content.appendChild(addTaskButton);
-    content.appendChild(taskLabel);
+    
     
   }
 

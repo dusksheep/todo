@@ -45,10 +45,16 @@ const saveTask = () => {
   
   saveTask.tasks[taskFactory(inputText.value).name] = taskFactory(inputText.value);
   let task = taskFactory(inputText.value);
+  localStorage[task] = task;
   renderer.renderTask(task);
   inputText.value = "";
+
   addTaskButton = document.getElementById("addTaskButton");
   addTaskButton.disabled = false;
+}
+
+const deleteTaskLabel = (taskLabel) => {
+  content.removeChild(taskLabel);
 }
 
 const cleanAll = () => {
@@ -71,4 +77,8 @@ export {
 
 export { 
   cleanAll
-}
+};
+
+export { 
+  deleteTaskLabel
+};
