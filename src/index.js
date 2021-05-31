@@ -4,8 +4,8 @@ import {projectFactory} from "./programLogic"
 import renderer from "./userInterface"
 
 
-console.log("testing4");
-const feedYoda = taskFactory("feed yoda", "1 day", "pets forever", "always pending", "high priority");
+console.log("testing8");
+const feedYoda = taskFactory("hoho yoda", "1 day", "pets forever", "always pending", "high priority");
 feedYoda.getTask();
 
 const petsWillConquerTheWorld = projectFactory("awesome pets", "have awesome pets");

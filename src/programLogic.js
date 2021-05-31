@@ -1,7 +1,7 @@
 import renderer from "./userInterface"
 
 const taskFactory = (name, dueTime, project, status, priority) => {
-  
+
   const getTask = () => {
     console.log(`task: ${name}, 
     duetime:${dueTime}, 
@@ -37,15 +37,44 @@ const projectFactory = (projectName, goal) => {
   }
 }
 
-const saveTask = () => {
-  const inputText = document.getElementById("inputText");
-  if(!saveTask.tasks) {
-    saveTask.tasks = {}
+const tasks = (() => {
+  const getTasks = () => {
+    if (!tasks.tasks) {
+      console.log("tasks created");
+      tasks.tasks = {};
+      return tasks.tasks;
+    }
+    return tasks.tasks
+  }
+
+  const addTask = (task) => {
+    tasks.tasks[task.name] = task;
+  }
+
+  const printTasks = () => {
+    for(let task in tasks.tasks) {
+      console.log(task);
+    }
   }
   
-  saveTask.tasks[taskFactory(inputText.value).name] = taskFactory(inputText.value);
+  return {
+    getTasks,
+    addTask,
+    printTasks
+  }
+
+})();
+
+
+const saveTask = () => {
+  const inputText = document.getElementById("inputText");
+  
+  tasks.getTasks();
   let task = taskFactory(inputText.value);
-  localStorage[task] = task;
+  tasks.addTask(task);
+  tasks.printTasks();
+  localStorage["tasks"] = tasks.getTasks();
+
   renderer.renderTask(task);
   inputText.value = "";
 
@@ -54,18 +83,18 @@ const saveTask = () => {
 }
 
 const deleteTaskLabel = (taskLabel) => {
+  const content = document.getElementById("content");
   content.removeChild(taskLabel);
 }
 
 const cleanAll = () => {
-  
-  saveTask.task = {};
+
   localStorage.clear();
   renderer.renderTask();
 
 }
 
-export { 
+export {
   saveTask
 };
 export {
@@ -75,10 +104,10 @@ export {
   projectFactory
 };
 
-export { 
+export {
   cleanAll
 };
 
-export { 
+export {
   deleteTaskLabel
 };

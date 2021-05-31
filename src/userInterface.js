@@ -59,12 +59,12 @@ const renderer = (() => {
       let deleteButton = document.createElement("button");
       deleteButton.setAttribute("class", "taskButton");
       deleteButton.innerHTML = "Remove";
-      deleteButton.addEventListener("click", () =>{content.removeChild(taskLabel);});
+      deleteButton.addEventListener("click", () =>{deleteTaskLabel(taskLabel)});
 
       let completeButton = document.createElement("button");
       completeButton.setAttribute("class", "taskButton");
       completeButton.innerHTML = "Done";
-      completeButton.addEventListener("click", removeTaskLabel = () =>{deleteTaskLabel(taskLabel)});
+      completeButton.addEventListener("click", () =>{deleteTaskLabel(taskLabel)});
       
       taskLabel.appendChild(completeButton);
       taskLabel.appendChild(deleteButton);
