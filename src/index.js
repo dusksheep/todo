@@ -1,14 +1,10 @@
 import {taskFactory} from "./programLogic"
 import {projectFactory} from "./programLogic"
 
+import {tasks} from "./programLogic"
 import renderer from "./userInterface"
 
-
-console.log("testing8");
-const feedYoda = taskFactory("hoho yoda", "1 day", "pets forever", "always pending", "high priority");
-feedYoda.getTask();
-
-const petsWillConquerTheWorld = projectFactory("awesome pets", "have awesome pets");
-petsWillConquerTheWorld.addTask(feedYoda);
-petsWillConquerTheWorld.getTasks();
+//window.addEventListener("load", storage.downloadTasks);
+window.addEventListener("load", tasks.createTasksObj);
+console.log("testing19");
 renderer.renderBones();

@@ -38,59 +38,95 @@ const projectFactory = (projectName, goal) => {
 }
 
 const tasks = (() => {
-  const getTasks = () => {
-    if (!tasks.tasks) {
-      console.log("tasks created");
-      tasks.tasks = {};
-      return tasks.tasks;
-    }
-    return tasks.tasks
-  }
+  let tasksObj;
 
-  const addTask = (task) => {
-    tasks.tasks[task.name] = task;
-  }
-
-  const printTasks = () => {
-    for(let task in tasks.tasks) {
-      console.log(task);
+  const createTasksObj = () => {
+    if (typeof tasksObj == "undefined") {
+      tasksObj = {};
+      console.log("tasksObj created");
+    } else {
+      console.log("tasksObj already exist");
     }
   }
-  
+
+  const deleteTask = (taskName) => {
+    delete tasksObj[taskName];
+  }
+
+  const getTasksObj = () => {
+    return tasksObj;
+  }
+
+  const addToTasksObj = (task) => {
+    tasksObj[task.name] = task;
+  }
+
+  const printTasksObj = () => {
+    for (let key in tasksObj) {
+      console.log("key from tasksObj " + key);
+    }
+  }
+  //const copyFromLocalStorage = () => {
+  //  tasks.tasks = Object.assign({}, localStorage.getItem("tasks"));
+  //  return tasks.tasks;
+  //}
+
+  //const pushToLocalStorage = () => {
+  /*  localStorage.setItem("tasks", tasks.tasks);
+    console.log("tasks updated");
+    tasks.printTasks();
+    storage.printLocalStorage();
+  }
+
+  */
+
   return {
-    getTasks,
-    addTask,
-    printTasks
-  }
+    createTasksObj,
+    getTasksObj,
+    addToTasksObj,
+    printTasksObj,
+    deleteTask,
+    //copyFromLocalStorage,
+    //pushToLocalStorage,
 
+  }
 })();
 
+/*const storage = (() => {
 
-const saveTask = () => {
-  const inputText = document.getElementById("inputText");
-  
-  tasks.getTasks();
-  let task = taskFactory(inputText.value);
-  tasks.addTask(task);
-  tasks.printTasks();
-  localStorage["tasks"] = tasks.getTasks();
+  const downloadTasks = () => {
+    if (localStorage.getItem("tasks") != undefined) {
+      tasks.copyFromLocalStorage();
+      console.log("tasks downloaded");
 
+    }
+  }
+
+  const printLocalStorage = () => {
+    console.log("printing local storage >>>>");
+    for (let property in localStorage.getItem("tasks")) {
+      console.log("local storage task " + property);
+    }
+  }
+
+  return {
+
+    downloadTasks,
+    printLocalStorage
+  }
+})();
+*/
+
+const saveTask = (inputText) => {
+  let task = taskFactory(inputText);
+  tasks.addToTasksObj(task);
+  tasks.printTasksObj();
   renderer.renderTask(task);
-  inputText.value = "";
-
-  addTaskButton = document.getElementById("addTaskButton");
-  addTaskButton.disabled = false;
-}
-
-const deleteTaskLabel = (taskLabel) => {
-  const content = document.getElementById("content");
-  content.removeChild(taskLabel);
 }
 
 const cleanAll = () => {
-
-  localStorage.clear();
-  renderer.renderTask();
+  console.log("local storage is cleared");
+  storage.printLocalStorage();
 
 }
 
@@ -103,11 +139,9 @@ export {
 export {
   projectFactory
 };
-
 export {
   cleanAll
 };
-
 export {
-  deleteTaskLabel
+  tasks
 };

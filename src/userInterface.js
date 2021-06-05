@@ -7,7 +7,7 @@ import {
 } from "./programLogic"
 
 import {
-  deleteTaskLabel
+  tasks
 } from "./programLogic"
 
 const renderer = (() => {
@@ -39,9 +39,18 @@ const renderer = (() => {
     inputLabel.innerHTML = "Task:";
 
     cancel.addEventListener("click", removeForm);
-    submit.addEventListener("click", saveTask);
-    submit.addEventListener("click", ()=>{content.removeChild(form)})
-    
+    submit.addEventListener("click", () => {
+      saveTask(inputText.value)
+    });
+    submit.addEventListener("click", () => {
+      inputText.value = ""
+    });
+    submit.addEventListener("click", () => {
+      addTaskButton.disabled = false
+    });
+    submit.addEventListener("click", () => {
+      content.removeChild(form)
+    })
 
     form.appendChild(inputLabel);
     form.appendChild(inputText);
@@ -51,24 +60,30 @@ const renderer = (() => {
   }
 
   const renderTask = (task) => {
-      
-      let taskLabel = document.createElement("label");
-      taskLabel.setAttribute("class", "taskLabel");
-      taskLabel.innerHTML = task.name;
+    let taskLabel = document.createElement("label");
+    taskLabel.setAttribute("class", "taskLabel");
+    taskLabel.innerHTML = task.name;
 
-      let deleteButton = document.createElement("button");
-      deleteButton.setAttribute("class", "taskButton");
-      deleteButton.innerHTML = "Remove";
-      deleteButton.addEventListener("click", () =>{deleteTaskLabel(taskLabel)});
+    let deleteButton = document.createElement("button");
+    deleteButton.setAttribute("class", "taskButton");
+    deleteButton.innerHTML = "Remove";
+    deleteButton.addEventListener("click", () => {
+      tasks.deleteTask(task.name)
+    });
+    deleteButton.addEventListener("click", () => {
+      content.removeChild(taskLabel)
+    });
 
-      let completeButton = document.createElement("button");
-      completeButton.setAttribute("class", "taskButton");
-      completeButton.innerHTML = "Done";
-      completeButton.addEventListener("click", () =>{deleteTaskLabel(taskLabel)});
-      
-      taskLabel.appendChild(completeButton);
-      taskLabel.appendChild(deleteButton);
-      content.appendChild(taskLabel);
+    let completeButton = document.createElement("button");
+    completeButton.setAttribute("class", "taskButton");
+    completeButton.innerHTML = "Done";
+    completeButton.addEventListener("click", () => {
+      content.removeChild(taskLabel)
+    });
+
+    taskLabel.appendChild(completeButton);
+    taskLabel.appendChild(deleteButton);
+    content.appendChild(taskLabel);
   }
 
   const renderBones = () => {
@@ -77,21 +92,21 @@ const renderer = (() => {
     const wrapper = document.createElement("div");
 
     cleanAllButton.setAttribute("class", "cleanButton");
-    wrapper.setAttribute("class", "wrapper");  
+    wrapper.setAttribute("class", "wrapper");
     addTaskButton.setAttribute("id", "addTaskButton");
-  
-    addTaskButton.innerHTML = "+";  
+
+    addTaskButton.innerHTML = "+";
     cleanAllButton.innerHTML = "Clean All";
 
     addTaskButton.addEventListener("click", renderForm);
-    addTaskButton.addEventListener("click", ()=>{addTaskButton.disabled = true});
+    addTaskButton.addEventListener("click", () => {
+      addTaskButton.disabled = true
+    });
     cleanAllButton.addEventListener("click", cleanAll);
-    
+
 
     content.appendChild(cleanAllButton);
     content.appendChild(addTaskButton);
-    
-    
   }
 
   return {
