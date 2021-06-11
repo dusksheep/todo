@@ -39,6 +39,9 @@ const renderer = (() => {
     inputLabel.innerHTML = "Task:";
 
     cancel.addEventListener("click", removeForm);
+    cancel.addEventListener("click", () => {
+      addTaskButton.disabled = false
+    })
     submit.addEventListener("click", () => {
       saveTask(inputText.value)
     });

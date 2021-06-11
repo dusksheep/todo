@@ -41,11 +41,12 @@ const tasks = (() => {
   let tasksObj;
 
   const createTasksObj = () => {
-    if (typeof tasksObj == "undefined") {
+    if (typeof storage.downloadTasks() == "undefined") {
       tasksObj = {};
       console.log("tasksObj created");
     } else {
-      console.log("tasksObj already exist");
+      tasksObj = storage.downloadTasks();
+      //renderer + define when taksObj should be uploaded to localStorage
     }
   }
 
@@ -58,7 +59,7 @@ const tasks = (() => {
   }
 
   const addToTasksObj = (task) => {
-    tasksObj[task.name] = task;
+      tasksObj[task.name] = task;
   }
 
   const printTasksObj = () => {
@@ -66,19 +67,6 @@ const tasks = (() => {
       console.log("key from tasksObj " + key);
     }
   }
-  //const copyFromLocalStorage = () => {
-  //  tasks.tasks = Object.assign({}, localStorage.getItem("tasks"));
-  //  return tasks.tasks;
-  //}
-
-  //const pushToLocalStorage = () => {
-  /*  localStorage.setItem("tasks", tasks.tasks);
-    console.log("tasks updated");
-    tasks.printTasks();
-    storage.printLocalStorage();
-  }
-
-  */
 
   return {
     createTasksObj,
@@ -86,48 +74,51 @@ const tasks = (() => {
     addToTasksObj,
     printTasksObj,
     deleteTask,
-    //copyFromLocalStorage,
-    //pushToLocalStorage,
-
   }
 })();
 
-/*const storage = (() => {
+const storage = (() => {
 
   const downloadTasks = () => {
     if (localStorage.getItem("tasks") != undefined) {
-      tasks.copyFromLocalStorage();
-      console.log("tasks downloaded");
-
+      let retrievedTasksObj = JSON.parse(localStorage.getItem("tasks"))
+      return retrievedTasksObj
     }
+    return undefined;
+}
+
+  const uploadToLocalStorage = (tasksObj) => {
+    localStorage.setItem("tasks", JSON.stringify(tasksObj))
+    printLocalStorage();
   }
 
   const printLocalStorage = () => {
-    console.log("printing local storage >>>>");
-    for (let property in localStorage.getItem("tasks")) {
-      console.log("local storage task " + property);
-    }
+    let retrievedTasksObj = localStorage.getItem("tasks")
+    console.log("retrieve OBJ 1 " + typeof retrievedTasksObj);  
   }
 
   return {
 
     downloadTasks,
-    printLocalStorage
+    printLocalStorage,
+    uploadToLocalStorage
   }
 })();
-*/
+
 
 const saveTask = (inputText) => {
+  if(inputText) {
   let task = taskFactory(inputText);
   tasks.addToTasksObj(task);
   tasks.printTasksObj();
   renderer.renderTask(task);
+  
+  }
+  
 }
 
 const cleanAll = () => {
-  console.log("local storage is cleared");
-  storage.printLocalStorage();
-
+  
 }
 
 export {
@@ -144,4 +135,7 @@ export {
 };
 export {
   tasks
+};
+export {
+  storage
 };
