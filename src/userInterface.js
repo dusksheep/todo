@@ -10,8 +10,13 @@ import {
   tasks
 } from "./programLogic"
 
+import {
+  storage
+} from "./programLogic"
+
 const renderer = (() => {
   'use strict';
+  const addTaskButton = document.createElement("button");
   const content = document.getElementById("content");
 
   const removeForm = () => {
@@ -53,6 +58,9 @@ const renderer = (() => {
     });
     submit.addEventListener("click", () => {
       content.removeChild(form)
+    });
+    submit.addEventListener("click", () => {
+      storage.uploadToLocalStorage();
     })
 
     form.appendChild(inputLabel);
@@ -89,8 +97,13 @@ const renderer = (() => {
     content.appendChild(taskLabel);
   }
 
+  const renderObject = (object) => {
+    for (let task in object)
+    renderTask(task)
+  }
+
   const renderBones = () => {
-    const addTaskButton = document.createElement("button");
+    
     const cleanAllButton = document.createElement("button");
     const wrapper = document.createElement("div");
 
@@ -117,6 +130,7 @@ const renderer = (() => {
     renderBones,
     removeForm,
     renderTask,
+    renderObject,
   };
 })();
 
