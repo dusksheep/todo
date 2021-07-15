@@ -30,7 +30,7 @@ const projectFactory = (projectName, goal) => {
     })
   }
   return {
-    projectName,
+    projectName    ,
     goal,
     addTask,
     getTasks,
@@ -41,12 +41,14 @@ const tasks = (() => {
   let tasksObj;
 
   const createTasksObj = () => {
-    if (typeof storage.downloadTasks() == "undefined") {
-      tasksObj = {};
+
+    if (storage.downloadTasks() === null) {
+      tasksObj = new Object();
       console.log("tasksObj created");
     } else {
       tasksObj = storage.downloadTasks();
-      //renderer + define when taksObj should be uploaded to localStorage
+      console.log("tasksObj downloaded")
+      renderer.renderObject(tasksObj);
     }
   }
 
@@ -59,7 +61,8 @@ const tasks = (() => {
   }
 
   const addToTasksObj = (task) => {
-      tasksObj[task.name] = task;
+    console.log("addidn a task to tasksObj type " + tasksObj)
+    tasksObj[task.name] = task;
   }
 
   const printTasksObj = () => {
@@ -80,21 +83,25 @@ const tasks = (() => {
 const storage = (() => {
 
   const downloadTasks = () => {
-    if (localStorage.getItem("tasks") != undefined) {
-      let retrievedTasksObj = JSON.parse(localStorage.getItem("tasks"))
-      return retrievedTasksObj
-    }
-    return undefined;
-}
+    if (localStorage.getItem("tasks") === null) {
+    return null;  
+    } 
+    let retrievedTasksObj = JSON.parse(localStorage.getItem("tasks"))
+    return retrievedTasksObj
+  }
 
-  const uploadToLocalStorage = (tasksObj) => {
-    localStorage.setItem("tasks", JSON.stringify(tasksObj))
+  const uploadToLocalStorage = () => {
+    console.log("typeof tasksObj " + typeof tasks.getTasksObj());
+    if (typeof tasks.getTasksObj() === "object") {
+      localStorage.setItem("tasks", JSON.stringify(tasks.getTasksObj()))
+
+    }
     printLocalStorage();
   }
 
   const printLocalStorage = () => {
     let retrievedTasksObj = localStorage.getItem("tasks")
-    console.log("retrieve OBJ 1 " + typeof retrievedTasksObj);  
+    console.log("retrieve OBJ 1 " + typeof retrievedTasksObj);
   }
 
   return {
@@ -107,18 +114,18 @@ const storage = (() => {
 
 
 const saveTask = (inputText) => {
-  if(inputText) {
-  let task = taskFactory(inputText);
-  tasks.addToTasksObj(task);
-  tasks.printTasksObj();
-  renderer.renderTask(task);
-  
+  if (inputText) {
+    let task = taskFactory(inputText);
+    tasks.addToTasksObj(task);
+    tasks.printTasksObj();
+    renderer.renderTask(task);
+
   }
-  
+
 }
 
 const cleanAll = () => {
-  
+localStorage.clear();
 }
 
 export {
